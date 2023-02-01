@@ -436,7 +436,7 @@ client.on('interactionCreate', async interaction => {
                 }
                 
                 await interaction.reply({ embeds: [{
-                    color: Discord.Colors.Green,
+                    color: Discord.Colors.Orange,
                     title: `Now tracking ${interaction.options.getString("action")} for collection ${interaction.options.getString("collection")} :white_check_mark:`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
@@ -472,7 +472,7 @@ client.on('interactionCreate', async interaction => {
                 delete listMints[interaction.guildId];
 
                 await interaction.reply({ embeds: [{
-                    color: Discord.Colors.Red,
+                    color: Discord.Colors.Orange,
                     title: `Stopped all trackings :octagonal_sign:`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
