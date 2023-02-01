@@ -1,0 +1,46 @@
+{
+  "txHash": "1f343d608509a03d4f6bbce554e113aed8efd82ce3ec4654c35aef56d5b4ef95",
+  "gasLimit": 20000000,
+  "gasPrice": 1000000000,
+  "gasUsed": 13297722,
+  "miniBlockHash": "0306402734b7dd98e9a5f696e37ef576249de1f7864e119a3c6cd160bdbbff61",
+  "nonce": 411,
+  "receiver": "erd1nwurmr56xkuvukp6kngg3s0dgg8dgwasa4c5q9pwk6xl3x3vv7ys7yykv5",
+  "receiverShard": 1,
+  "round": 13194084,
+  "sender": "erd1nwurmr56xkuvukp6kngg3s0dgg8dgwasa4c5q9pwk6xl3x3vv7ys7yykv5",
+  "senderShard": 1,
+  "signature": "b59864b55f612420b2dbaf9e2ebee20c0410f7c52838855e009cbac7fe4b019c0b4b07d7afc2e7c0adaacec4e766d9a53be565e73f6f9cc11557b7d99d832d02",
+  "status": "success",
+  "value": "0",
+  "fee": "611642220000000",
+  "timestamp": 1675282104,
+  "data": "TXVsdGlFU0RUTkZUVHJhbnNmZXJAMDAwMDAwMDAwMDAwMDAwMDA1MDBkM2IyODgyOGQ2MjA1MjEyNGYwN2RjZDUwZWQzMWIwODI1ZjYwZWVlMTUyNkAwMUA0NTVhNGQ0MjJkMzY2MzM3NjUzMDM3QDVlQDAxQDZjNjk3Mzc0Njk2ZTY3QDAwMDAwMDA4MDRkYjczMjU0NzYzMDAwMDAwMDAwMDA4MDRkYjczMjU0NzYzMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwNDQ1NDc0YzQ0MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwYjQ1NWE0ZDQyMmQzNjYzMzc2NTMwMzcwMDAwMDAwMDAwMDAwMDVlMDAwMDAwMDEwMQ==",
+  "function": "listing",
+  "action": {
+    "category": "esdtNft",
+    "name": "transfer",
+    "description": "Transfer",
+    "arguments": {
+      "transfers": [
+        {
+          "type": "NonFungibleESDT",
+          "name": "EternalZombies",
+          "ticker": "EZMB-6c7e07",
+          "collection": "EZMB-6c7e07",
+          "identifier": "EZMB-6c7e07-5e",
+          "value": "1"
+        }
+      ],
+      "receiver": "erd1qqqqqqqqqqqqqpgq6wegs2xkypfpync8mn2sa5cmpqjlvrhwz5nqgepyg8",
+      "functionName": "listing",
+      "functionArgs": [
+        "0000000804db7325476300000000000804db73254763000000000000000000000000000445474c44000000000000000000000000000b455a4d422d366337653037000000000000005e0000000101"
+      ],
+      "receiverAssets": {
+        "name": "XOXNO: Marketplace",
+        "tags": ["xoxno", "marketplace"]
+      }
+    }
+  }
+}
