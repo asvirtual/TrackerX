@@ -498,7 +498,7 @@ client.on('interactionCreate', async interaction => {
 
                 let embed = {
                     color: Discord.Colors.Blue,
-                    title: `Listings`,
+                    title: `LISTINGS`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
@@ -520,7 +520,7 @@ client.on('interactionCreate', async interaction => {
                         };
                     } else 
                         embed.fields.push({
-                            name: `Listing ${idx+1}:`,
+                            name: `Listing tracker ${idx+1}:`,
                             value: `${tracking.collection} on <#${tracking.channel}>`
                         });
                     
@@ -529,7 +529,7 @@ client.on('interactionCreate', async interaction => {
 
                 embed = {
                     color: Discord.Colors.Blue,
-                    title: `Sales`,
+                    title: `SALES`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
@@ -547,7 +547,7 @@ client.on('interactionCreate', async interaction => {
                             footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
-                                name: `Sale ${idx+1}:`,
+                                name: `Sale tracker ${idx+1}:`,
                                 value: `${tracking.collection} on <#${tracking.channel}>`
                             }]
                         };
@@ -562,7 +562,7 @@ client.on('interactionCreate', async interaction => {
 
                 embed = {
                     color: Discord.Colors.Blue,
-                    title: `Mints`,
+                    title: `MINTS`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
@@ -586,7 +586,7 @@ client.on('interactionCreate', async interaction => {
                         };
                     } else 
                         embed.fields.push({
-                            name: `Mint ${idx+1}:`,
+                            name: `Mint tracker ${idx+1}:`,
                             value: `${tracking.collection} on <#${tracking.channel}>`
                         });
                         
