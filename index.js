@@ -488,7 +488,7 @@ client.on('interactionCreate', async interaction => {
                 ];
 
                 const embeds = [{ 
-                    color: Discord.Colors.Blue,
+                    color: Discord.Colors.Orange,
                     title: `Active trackings in this server :mag:`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
@@ -497,7 +497,7 @@ client.on('interactionCreate', async interaction => {
                 let idx = 0;
 
                 let embed = {
-                    color: Discord.Colors.Blue,
+                    color: Discord.Colors.Orange,
                     title: `LISTINGS`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
@@ -510,7 +510,7 @@ client.on('interactionCreate', async interaction => {
                     if (idx !== 0 && idx % 25 === 0) {
                         embeds.push(embed);
                         embed = {
-                            color: Discord.Colors.Blue,
+                            color: Discord.Colors.Orange,
                             footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
@@ -528,7 +528,7 @@ client.on('interactionCreate', async interaction => {
                 });
 
                 embed = {
-                    color: Discord.Colors.Blue,
+                    color: Discord.Colors.Orange,
                     title: `SALES`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
@@ -543,7 +543,7 @@ client.on('interactionCreate', async interaction => {
                     if (idx !== 0 && idx % 25 === 0) {
                         embeds.push(embed);
                         embed = {
-                            color: Discord.Colors.Blue,
+                            color: Discord.Colors.Orange,
                             footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
@@ -561,7 +561,7 @@ client.on('interactionCreate', async interaction => {
                 })
 
                 embed = {
-                    color: Discord.Colors.Blue,
+                    color: Discord.Colors.Orange,
                     title: `MINTS`,
                     footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
@@ -576,7 +576,7 @@ client.on('interactionCreate', async interaction => {
                     if (idx !== 0 && idx % 25 === 0) {
                         embeds.push(embed);
                         embed = {
-                            color: Discord.Colors.Blue,
+                            color: Discord.Colors.Orange,
                             footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
@@ -597,7 +597,7 @@ client.on('interactionCreate', async interaction => {
                 return;
             case "help":
                 await interaction.reply({ embeds: [{
-                    color: Discord.Colors.Blue,
+                    color: Discord.Colors.Orange,
                     description: `**TrackerX** is a *completely free* bot that allows tracking sales, listings and mints of NFT collections on the **MultiversX (EGLD)** blockchain, previously called Elrond.\mIt was created by *Asvirtual#2503* for **Ziken Labs**.\n\n__Here is the list of available commands:__`,
                     fields: [
                         {
