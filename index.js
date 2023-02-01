@@ -129,7 +129,7 @@ async function trackSales() {
             Object.entries(listSales).forEach(async ([guildId, listing]) => {
                 if (Object.keys(listing).includes(collection)) {
                     const embed = {
-                        color: 0x00ff00,
+                        color: Discord.Colors.Orange,
                         image: { url: image },
                         title: `NEW SALE! 🛒`,
                         description: message,
@@ -240,17 +240,17 @@ async function trackListings() {
 
                             let message;
                             if (list_attributes.length > 0)
-                                message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD\n"+"**Owner: **"+receiver+"**"+"\n\n** **Attributes:**\n"+ list_attributes.join("\n");
+                                message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD\n"+"** **Owner:** **"+receiver+"**"+"\n\n** **Attributes:**\n"+ list_attributes.join("\n");
                             else
                                 if (transaction_price_usd != undefined && transaction_price_usd != null)
-                                    message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD ($"+transaction_price_usd+")\n\n"+"**Owner: **"+receiver+"**";
+                                    message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD ($"+transaction_price_usd+")\n\n"+"** **Owner:** **"+receiver+"**";
                                 else
-                                    message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD\n\n"+"**Owner: **"+receiver+"**";
+                                    message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD\n\n"+"** **Owner:** **"+receiver+"**";
                             
                             Object.entries(listListings).forEach(async ([guildId, listing]) => {
                                 if (Object.keys(listing).includes(collection)) {
                                     const embed = {
-                                        color: 0x00ff00,
+                                        color: Discord.Colors.Orange,
                                         image: { url: image },
                                         title: `NEW LISTING! 🛒`,
                                         description: message,
@@ -367,7 +367,7 @@ async function trackMints() {
                         Object.entries(listMints).forEach(async ([guildId, listing]) => {
                             if (Object.keys(listing).includes(collection)) {
                                 const embed = {
-                                    color: 0x00ff00,
+                                    color: Discord.Colors.Orange,
                                     image: { url: image },
                                     title: `NEW MINT! 🛒`,
                                     description: message,
