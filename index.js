@@ -515,14 +515,16 @@ client.on('interactionCreate', async interaction => {
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Listing ${idx+1}:`,
-                                value: tracking.collection
+                                value: `${tracking.collection} on <#${tracking.channel}>`
                             }]
                         };
                     } else 
                         embed.fields.push({
                             name: `Listing ${idx+1}:`,
-                            value: tracking.collection
+                            value: `${tracking.collection} on <#${tracking.channel}>`
                         });
+                    
+                    idx++;
                 });
 
                 embed = {
@@ -535,6 +537,8 @@ client.on('interactionCreate', async interaction => {
 
                 embeds.push(embed);
 
+                idx = 0;
+
                 Object.entries(listSales[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel })).forEach(tracking => {
                     if (idx !== 0 && idx % 25 === 0) {
                         embeds.push(embed);
@@ -544,14 +548,16 @@ client.on('interactionCreate', async interaction => {
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Sale ${idx+1}:`,
-                                value: tracking.collection
+                                value: `${tracking.collection} on <#${tracking.channel}>`
                             }]
                         };
                     } else 
                         embed.fields.push({
                             name: `Sale ${idx+1}:`,
-                            value: tracking.collection
+                            value: `${tracking.collection} on <#${tracking.channel}>`
                         });
+                        
+                    idx++;
                 })
 
                 embed = {
@@ -564,6 +570,8 @@ client.on('interactionCreate', async interaction => {
 
                 embeds.push(embed);
 
+                idx = 0;
+
                 Object.entries(listMints[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel })).forEach(tracking => {
                     if (idx !== 0 && idx % 25 === 0) {
                         embeds.push(embed);
@@ -573,14 +581,16 @@ client.on('interactionCreate', async interaction => {
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Mint ${idx+1}:`,
-                                value: tracking.collection
+                                value: `${tracking.collection} on <#${tracking.channel}>`
                             }]
                         };
                     } else 
                         embed.fields.push({
                             name: `Mint ${idx+1}:`,
-                            value: tracking.collection
+                            value: `${tracking.collection} on <#${tracking.channel}>`
                         });
+                        
+                    idx++;
                 });
 
                 await interaction.reply({ embeds });
