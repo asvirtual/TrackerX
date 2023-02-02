@@ -124,7 +124,7 @@ async function trackSales() {
             if (listAttributes?.length === 0 || listAttributes == null || listAttributes == undefined)
                 message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** **${receiver}**\n\n`;
             else if (listAttributes)
-                message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** **${receiver}**\n\n** **Attributes:**\n${listAttributes.join('\n')}`;
+                message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** **${receiver}**\n\n**Attributes:**\n${listAttributes.join('\n')}`;
 
             Object.entries(listSales).forEach(async ([guildId, listing]) => {
                 if (Object.keys(listing).includes(collection)) {
