@@ -110,10 +110,10 @@ async function trackSales() {
                     link = "https://www.frameit.gg/marketplace/nft/" + collectionId;
                     marketPlaceName = "Frame It";
                 }
-                if (item.receiver === "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0") {
-                    link = "https://deadrare.io/nft/" + collectionId;
-                    marketPlaceName = "Deadrare";
-                }
+            } 
+            if (item.receiver === "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0") {
+                link = "https://deadrare.io/nft/" + collectionId;
+                marketPlaceName = "Deadrare";
             }
 
             const receiver = "["+item["receiver"].slice(0, 3) + "..." + item["receiver"].slice(-3)+"](https://explorer.multiversx.com/accounts/"+item["receiver"]+")";
@@ -122,9 +122,9 @@ async function trackSales() {
 
             let message;
             if (listAttributes?.length === 0 || listAttributes == null || listAttributes == undefined)
-                message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** **${receiver}**\n\n`;
+                message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** ${receiver}\n\n`;
             else if (listAttributes)
-                message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** **${receiver}**\n\n**Attributes:**\n${listAttributes.join('\n')}`;
+                message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transaction_price} EGLD\n**Sender:** **${sender}**\n**Receiver:** ${receiver}\n\n__**Attributes:**__\n${listAttributes.join('\n')}`;
 
             Object.entries(listSales).forEach(async ([guildId, listing]) => {
                 if (Object.keys(listing).includes(collection)) {
@@ -133,7 +133,7 @@ async function trackSales() {
                         image: { url: image },
                         title: `NEW SALE! 🛒`,
                         description: message,
-                        footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                        footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                         timestamp: (new Date()).toISOString(),
                     }
 
@@ -228,19 +228,20 @@ async function trackListings() {
                             else
                                 image = image_response["media"][0]["url"];
                                 
-                            if ("arguments" in item["action"]) 
+                            if ("arguments" in item["action"]) {
                                 if ("receiverAssets" in item["action"]["arguments"]) {
-                                    if (item["action"]["arguments"]["receiverAssets"]["name"] == "XOXNO: Marketplace")
+                                    if (item["action"]["arguments"]["receiverAssets"]["name"] === "XOXNO: Marketplace")
                                         link = "https://xoxno.com/nft/" + collection_id;
-                                    if (item["action"]["arguments"]["receiverAssets"]["name"] == "Frame It: Marketplace")
+                                    if (item["action"]["arguments"]["receiverAssets"]["name"] === "Frame It: Marketplace")
                                         link = "https://www.frameit.gg/marketplace/nft/" + collection_id;
-                                    if (item["receiver"] == "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0")
-                                        link = "https://deadrare.io/nft/"+collection_id;
-                                }
+                                } 
+                                if (item["receiver"] == "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0")
+                                    link = "https://deadrare.io/nft/"+collection_id;
+                            }
 
                             let message;
                             if (list_attributes.length > 0)
-                                message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD\n"+"**Owner: **"+receiver+"**"+"\n\n** **Attributes:**\n"+ list_attributes.join("\n");
+                                message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD\n"+"**Owner: **"+receiver+"**"+"\n\n**__**Attributes:**__\n"+ list_attributes.join("\n");
                             else
                                 if (transaction_price_usd != undefined && transaction_price_usd != null)
                                     message = "**Name:** "+name+"\n**Collection:** "+collection+"\n**Price:** "+transaction_price_egld+" EGLD ($"+transaction_price_usd+")\n\n"+"**Owner: **"+receiver+"**";
@@ -252,9 +253,9 @@ async function trackListings() {
                                     const embed = {
                                         color: Discord.Colors.Orange,
                                         image: { url: image },
-                                        title: `NEW LISTING! 🛒`,
+                                        title: `NEW LISTING! 🏷️`,
                                         description: message,
-                                        footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                                        footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                                         timestamp: (new Date()).toISOString(),
                                     }
                     
@@ -298,7 +299,7 @@ async function trackMints() {
         );
         const first5Mints = first5MintsResp.data;
         const firstTxHash = first5Mints[0]["txHash"];
-        if (firstTxHash !== lastTxHashMints) {
+        // if (firstTxHash !== lastTxHashMints) {
             for (let mint_transaction of first5Mints) {
                 if (mint_transaction["txHash"] !== lastTxHashMints) {
                     reversed_list.push(mint_transaction);
@@ -306,7 +307,7 @@ async function trackMints() {
                     break;
                 }
             }
-        }
+        // }
         if (reversed_list.length > 0) {
             for (let item of reversed_list.reverse()) {
                 const transactionResp = await axios.get(
@@ -315,7 +316,7 @@ async function trackMints() {
                 );
                 let transaction = transactionResp.data;
                 let transaction_nft = getIdentifierFromTransaction(transaction["operations"]);
-                if (transaction_nft != null) {
+                if (transaction_nft != null && !transaction.operations) {
                     if ("identifier" in transaction_nft) {
                         const nftResp = await axios.get(
                             'https://api.multiversx.com/nfts/' + transaction_nft["identifier"],
@@ -346,22 +347,22 @@ async function trackMints() {
                         }
 
                         if ("receiverAssets" in item) {
-                            if (item["receiverAssets"]["name"] == "XOXNO: Marketplace")
+                            if (item["receiverAssets"]["name"] === "XOXNO: Marketplace")
                                 link = "https://xoxno.com/nft/" + collection_id
-                            if (item["receiverAssets"]["name"] == "Frame It: Marketplace")
+                            if (item["receiverAssets"]["name"] === "Frame It: Marketplace")
                                 link = "https://www.frameit.gg/marketplace/nft/" + collection_id
-                            if (item["receiver"] == "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0")
-                                link = "https://deadrare.io/nft/"+collection_id
                         }
+                        if (item["receiver"] === "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0")
+                            link = "https://deadrare.io/nft/"+collection_id 
 
                         const receiver = `[${item["receiver"].substring(0, 3)}...${item["receiver"].substring(item["receiver"].length - 3)}](https://explorer.multiversx.com/accounts/${item["receiver"]})`;
                         const sender = `[${item["sender"].substring(0, 3)}...${item["sender"].substring(item["sender"].length - 3)}](https://explorer.multiversx.com/accounts/${item["sender"]})`;
                         const transactionPrice = (item["value"] / 1000000000000000000).toString();
                         let message;
                         if (list_attributes.length === 0) {
-                            message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transactionPrice} EGLD\n**Smart contract:** **${sender}**\n**Minter:** **${receiver}**\n\n`;
+                            message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transactionPrice} EGLD\n**Minter:** ${receiver}\n\n`;
                         } else {
-                            message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transactionPrice} EGLD\n**Smart contract:** **${sender}**\n**Minter:** **${receiver}**\n\n** **Attributes**:\n${list_attributes.join("\n")}`;
+                            message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transactionPrice} EGLD\n**Minter:** ${receiver}\n\n__**Attributes:**__:\n${list_attributes.join("\n")}`;
                         }
 
                         Object.entries(listMints).forEach(async ([guildId, listing]) => {
@@ -369,9 +370,9 @@ async function trackMints() {
                                 const embed = {
                                     color: Discord.Colors.Orange,
                                     image: { url: image },
-                                    title: `NEW MINT! 🛒`,
+                                    title: `NEW MINT! 💸`,
                                     description: message,
-                                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                                     timestamp: (new Date()).toISOString(),
                                 }
                 
@@ -394,6 +395,102 @@ async function trackMints() {
                                     await (await guild.channels.fetch(listing[collection].channel)).send({ embeds: [embed], components: [row] });
                             }
                         });
+                    } 
+                } else if (transaction_nft != null && transaction.operations != undefined) {
+                    const mintTransactions = transaction.operations.filter(mintTransaction => mintTransaction.receiver === transaction.sender && mintTransaction.sender === transaction.receiver && mintTransaction.action === "transfer" && "identifier" in mintTransaction);
+                    for (const mintTransaction of transaction.operations) {
+                        if (mintTransaction.receiver === transaction.sender && mintTransaction.sender === transaction.receiver && mintTransaction.action === "transfer" && "identifier" in mintTransaction) {
+                            const nftResp = await axios.get(
+                                'https://api.multiversx.com/nfts/' + mintTransaction["identifier"],
+                                { headers: { 'accept': 'application/json' } }
+                            );
+                            let transaction_nft = nftResp.data;
+                            const collection_id = transaction_nft["identifier"];
+                            let link = "https://xoxno.com/nft/" + transaction_nft["identifier"];
+                            let name = transaction_nft["name"];
+                            let collection = transaction_nft["collection"];
+                            if ("attributes" in transaction_nft) {
+                                let decode_string = Buffer.from(transaction_nft.attributes, 'base64').toString();
+                                list_attributes = getListFromDecoded(decode_string);
+                            }
+
+                            if ("metadata" in transaction_nft) {
+                                if ("attributes" in transaction_nft["metadata"]) {
+                                    let attributes = transaction_nft["metadata"]["attributes"];
+                                    if (attributes.length > 0) {
+                                        list_attributes = attributes.filter(d => d["trait_type"] !== "None").map(d => `**${d["trait_type"]}:** ${d["value"]}`);
+                                    }
+                                }
+                            }
+
+                            if (list_attributes[0].includes("**metadata:**"))
+                                list_attributes = [];
+
+                            let image;
+                            if ("url" in transaction_nft) {
+                                if (transaction_nft.url.includes(".mp4") && transaction_nft.media)
+                                    image = transaction_nft.media[0].thumbnailUrl;
+                                else
+                                    image = transaction_nft["url"];
+                            } else {
+                                if (transaction_nft["media"][0]["url"].includes(".mp4"))
+                                    image = transaction_nft.media[0].thumbnailUrl;
+                                else
+                                    image = transaction_nft["media"][0]["url"];
+                            }
+    
+                            if ("receiverAssets" in transaction) {
+                                if (transaction["receiverAssets"]["name"] === "XOXNO: Marketplace")
+                                    link = "https://xoxno.com/nft/" + collection_id;
+                                if (transaction["receiverAssets"]["name"] === "Frame It: Marketplace")
+                                    link = "https://www.frameit.gg/marketplace/nft/" + collection_id;
+                            } 
+                            if (transaction["receiver"] === "erd1qqqqqqqqqqqqqpgqd9rvv2n378e27jcts8vfwynpx0gfl5ufz6hqhfy0u0")
+                                link = "https://deadrare.io/nft/" + collection_id;
+                                    
+                            const receiver = `[${transaction["sender"].substring(0, 3)}...${transaction["sender"].substring(transaction["sender"].length - 3)}](https://explorer.multiversx.com/accounts/${transaction["sender"]})`;
+                            const transactionPrice = (transaction["value"] / 1000000000000000000) / Object.keys(mintTransactions).length;
+                            let message;
+                            if (!list_attributes || list_attributes.length === 0) {
+                                message = `**Name:** ${name}\n**Collection:** ${collection}\n${transactionPrice !== 0 ? "**Price:** " + transactionPrice + " EGLD\n" : ""}**Minter:** ${receiver}\n\n`;
+                            } else {
+                                message = `**Name:** ${name}\n**Collection:** ${collection}\n${transactionPrice !== 0 ? "**Price:** " + transactionPrice + " EGLD\n" : ""}**Minter:** ${receiver}\n\n__**Attributes:**__:\n${list_attributes.join("\n")}`;
+                            }
+    
+                            Object.entries(listMints).forEach(async ([guildId, listing]) => {
+                            // Object.entries({ "1052592184345501726": { "ETHOS-205078": "1052592184781717506" } }).forEach(async ([guildId, listing]) => {
+                                if (Object.keys(listing).includes(collection)) {
+                                // if (true) {
+                                    const embed = {
+                                        color: Discord.Colors.Orange,
+                                        title: `NEW MINT! 💸`,
+                                        image: { url: image },
+                                        description: message,
+                                        footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                                        timestamp: (new Date()).toISOString(),
+                                    }
+                    
+                                    const row = new Discord.ActionRowBuilder()
+                                        .addComponents(
+                                            new Discord.ButtonBuilder()
+                                                .setLabel('View Tx')
+                                                .setStyle(Discord.ButtonStyle.Link)
+                                                .setURL("https://explorer.multiversx.com/transactions/" + mintTransaction.id)
+                                        )
+                                        .addComponents(
+                                            new Discord.ButtonBuilder()
+                                                .setLabel('View NFT')
+                                                .setStyle(Discord.ButtonStyle.Link)
+                                                .setURL(link)
+                                        );
+                                        
+                                    const guild = client.guilds.cache.get(guildId);
+                                    if (guild)
+                                        await (await guild.channels.fetch(listing[collection].channel)).send({ embeds: [embed], components: [row] });
+                                        // await (await guild.channels.fetch("1052592184781717506")).send({ embeds: [embed], components: [row] });
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -438,7 +535,7 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
                     title: `Now tracking ${interaction.options.getString("action")} for collection ${interaction.options.getString("collection")} :white_check_mark:`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                 }] });
 
@@ -460,7 +557,7 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
                     title: `Stopped tracking ${interaction.options.getString("action")} for collection ${interaction.options.getString("collection")} :octagonal_sign:`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                 }] });
                 
@@ -474,23 +571,17 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
                     title: `Stopped all trackings :octagonal_sign:`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                 }] });
 
                 save();
                 return;
             case "list":
-                let trackings = [ 
-                    ...Object.entries(listListings[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel, type: "listing" })),
-                    ...Object.entries(listSales[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel, type: "sale" })),
-                    ...Object.entries(listMints[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel, type: "mint" })),
-                ];
-
                 const embeds = [{ 
                     color: Discord.Colors.Orange,
                     title: `Active trackings in this server :mag:`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                 }];
 
@@ -498,8 +589,8 @@ client.on('interactionCreate', async interaction => {
 
                 let embed = {
                     color: Discord.Colors.Orange,
-                    title: `LISTINGS`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    title: `LISTINGS 🏷️`,
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
                 };
@@ -511,10 +602,10 @@ client.on('interactionCreate', async interaction => {
                         embeds.push(embed);
                         embed = {
                             color: Discord.Colors.Orange,
-                            footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                            footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
-                                name: `Listing ${idx+1}:`,
+                                name: `Listing tracker ${idx+1}:`,
                                 value: `${tracking.collection} on <#${tracking.channel}>`
                             }]
                         };
@@ -529,8 +620,8 @@ client.on('interactionCreate', async interaction => {
 
                 embed = {
                     color: Discord.Colors.Orange,
-                    title: `SALES`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    title: `SALES 🛒`,
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
                 };
@@ -544,7 +635,7 @@ client.on('interactionCreate', async interaction => {
                         embeds.push(embed);
                         embed = {
                             color: Discord.Colors.Orange,
-                            footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                            footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Sale tracker ${idx+1}:`,
@@ -553,7 +644,7 @@ client.on('interactionCreate', async interaction => {
                         };
                     } else 
                         embed.fields.push({
-                            name: `Sale ${idx+1}:`,
+                            name: `Sale tracker ${idx+1}:`,
                             value: `${tracking.collection} on <#${tracking.channel}>`
                         });
                         
@@ -562,8 +653,8 @@ client.on('interactionCreate', async interaction => {
 
                 embed = {
                     color: Discord.Colors.Orange,
-                    title: `MINTS`,
-                    footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                    title: `MINTS 💸`,
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
                 };
@@ -577,10 +668,10 @@ client.on('interactionCreate', async interaction => {
                         embeds.push(embed);
                         embed = {
                             color: Discord.Colors.Orange,
-                            footer: { text: `Developed by Ziken Labs, 2023`, image: client.user.avatar },
+                            footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
-                                name: `Mint ${idx+1}:`,
+                                name: `Mint tracker ${idx+1}:`,
                                 value: `${tracking.collection} on <#${tracking.channel}>`
                             }]
                         };
@@ -598,7 +689,7 @@ client.on('interactionCreate', async interaction => {
             case "help":
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
-                    description: `**TrackerX** is a *completely free* bot that allows tracking sales, listings and mints of NFT collections on the **MultiversX (EGLD)** blockchain, previously called Elrond.\mIt was created by *Asvirtual#2503* for **Ziken Labs**.\n\n__Here is the list of available commands:__`,
+                    description: `**TrackerX** is a *completely free* bot that allows tracking sales, listings and mints of NFT collections on the **MultiversX (EGLD)** blockchain, previously called Elrond.\mIt was created by *Asvirtual#2503* for **Ziken Labs**.\n\nHere is the list of available commands:`,
                     fields: [
                         {
                             name: "/track",
@@ -628,7 +719,7 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log("Bot ready");
 
     load();
