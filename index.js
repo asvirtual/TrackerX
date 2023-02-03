@@ -90,7 +90,7 @@ async function trackSales() {
 
             let link = "https://api.multiversx.com/nfts/" + transactionNft.identifier;
             const { name, identifier: collectionId, collection, attributes } = transactionNft;
-            let listAttributes, image, marketPlaceName;
+            let listAttributes, image;
 
             if (transactionNft.attributes)
                 listAttributes = getListFromDecoded(attributes);
@@ -728,7 +728,7 @@ client.on('ready', async () => {
         trackSales();
         trackListings();
         trackMints();
-    }, 1000 * 15);
+    }, 1000 * 60);
     // }, 1000 * 4);
 
     return;
