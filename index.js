@@ -133,7 +133,7 @@ async function trackSales() {
                         image: { url: image },
                         title: `NEW SALE! 🛒`,
                         description: message,
-                        footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                        footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                         timestamp: (new Date()).toISOString(),
                     }
 
@@ -255,7 +255,7 @@ async function trackListings() {
                                         image: { url: image },
                                         title: `NEW LISTING! 🏷️`,
                                         description: message,
-                                        footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                                        footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                                         timestamp: (new Date()).toISOString(),
                                     }
                     
@@ -372,7 +372,7 @@ async function trackMints() {
                                     image: { url: image },
                                     title: `NEW MINT! 💸`,
                                     description: message,
-                                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                                     timestamp: (new Date()).toISOString(),
                                 }
                 
@@ -466,7 +466,7 @@ async function trackMints() {
                                         title: `NEW MINT! 💸`,
                                         image: { url: image },
                                         description: message,
-                                        footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                                        footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                                         timestamp: (new Date()).toISOString(),
                                     }
                     
@@ -535,7 +535,7 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
                     title: `Now tracking ${interaction.options.getString("action")} for collection ${interaction.options.getString("collection")} :white_check_mark:`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                 }] });
 
@@ -557,7 +557,7 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
                     title: `Stopped tracking ${interaction.options.getString("action")} for collection ${interaction.options.getString("collection")} :octagonal_sign:`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                 }] });
                 
@@ -571,7 +571,7 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ embeds: [{
                     color: Discord.Colors.Orange,
                     title: `Stopped all trackings :octagonal_sign:`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                 }] });
 
@@ -581,7 +581,7 @@ client.on('interactionCreate', async interaction => {
                 const embeds = [{ 
                     color: Discord.Colors.Orange,
                     title: `Active trackings in this server :mag:`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                 }];
 
@@ -590,7 +590,7 @@ client.on('interactionCreate', async interaction => {
                 let embed = {
                     color: Discord.Colors.Orange,
                     title: `LISTINGS 🏷️`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
                 };
@@ -602,7 +602,7 @@ client.on('interactionCreate', async interaction => {
                         embeds.push(embed);
                         embed = {
                             color: Discord.Colors.Orange,
-                            footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                            footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Listing tracker ${idx+1}:`,
@@ -621,7 +621,7 @@ client.on('interactionCreate', async interaction => {
                 embed = {
                     color: Discord.Colors.Orange,
                     title: `SALES 🛒`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
                 };
@@ -635,7 +635,7 @@ client.on('interactionCreate', async interaction => {
                         embeds.push(embed);
                         embed = {
                             color: Discord.Colors.Orange,
-                            footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                            footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Sale tracker ${idx+1}:`,
@@ -654,7 +654,7 @@ client.on('interactionCreate', async interaction => {
                 embed = {
                     color: Discord.Colors.Orange,
                     title: `MINTS 💸`,
-                    footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                    footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                     timestamp: (new Date()).toISOString(),
                     fields: [],
                 };
@@ -668,7 +668,7 @@ client.on('interactionCreate', async interaction => {
                         embeds.push(embed);
                         embed = {
                             color: Discord.Colors.Orange,
-                            footer: { text: `Powered by Ziken Labs, 2023`, image: client.user.avatar },
+                            footer: { text: `Powered by Ziken Labs, 2023`, image: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
                             timestamp: (new Date()).toISOString(),
                             fields: [{
                                 name: `Mint tracker ${idx+1}:`,
