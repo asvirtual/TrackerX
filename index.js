@@ -299,7 +299,7 @@ async function trackMints() {
         );
         const first5Mints = first5MintsResp.data;
         const firstTxHash = first5Mints[0]["txHash"];
-        // if (firstTxHash !== lastTxHashMints) {
+        if (firstTxHash !== lastTxHashMints) {
             for (let mint_transaction of first5Mints) {
                 if (mint_transaction["txHash"] !== lastTxHashMints) {
                     reversed_list.push(mint_transaction);
@@ -307,7 +307,7 @@ async function trackMints() {
                     break;
                 }
             }
-        // }
+        }
         if (reversed_list.length > 0) {
             for (let item of reversed_list.reverse()) {
                 const transactionResp = await axios.get(
