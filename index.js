@@ -801,7 +801,7 @@ client.on('ready', async () => {
     }, 1000 * 60);
     // }, 1000 * 4);
 
-    // return;
+    return;
 
     client.application.commands.set([
         {
