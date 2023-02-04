@@ -29,13 +29,13 @@ function load() {
     try {
         const data = JSON.parse(fs.readFileSync("data.json"));
 
-        listSales = data.listSales;
-        listListings = data.listListings;
-        listMints = data.listMints;
+        listSales = data.listSales ?? {};
+        listListings = data.listListings ?? {};
+        listMints = data.listMints ?? {};
 
-        lastTxHashSales = data.lastTxHashSales;
-        lastTxHashListings = data.lastTxHashListings;
-        lastTxHashMints = data.lastTxHashMints;
+        lastTxHashSales = data.lastTxHashSales ?? "";
+        lastTxHashListings = data.lastTxHashListings ?? "";
+        lastTxHashMints = data.lastTxHashMints ?? "";
     } catch (e) {
         console.warn(`Error loading data: ${e}`);
     }
@@ -152,8 +152,9 @@ async function trackSales() {
                         );
 
                     const guild = client.guilds.cache.get(guildId);
-                    if (guild)
-                        await (await guild.channels.fetch(listing[collection].channel)).send({ embeds: [embed], components: [row] });
+                    if (guild) 
+                        listing[collection].forEach(async channelId => 
+                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                 }
             });
         }
@@ -274,8 +275,9 @@ async function trackListings() {
                                         );
 
                                     const guild = client.guilds.cache.get(guildId);
-                                    if (guild)
-                                        await (await guild.channels.fetch(listing[collection].channel)).send({ embeds: [embed], components: [row] });
+                                    if (guild) 
+                                        listing[collection].forEach(async channelId => 
+                                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                                 }
                             })
                         }
@@ -389,10 +391,11 @@ async function trackMints() {
                                             .setStyle(Discord.ButtonStyle.Link)
                                             .setURL(link)
                                     );
-
+                                
                                 const guild = client.guilds.cache.get(guildId);
-                                if (guild)
-                                    await (await guild.channels.fetch(listing[collection].channel)).send({ embeds: [embed], components: [row] });
+                                if (guild) 
+                                    listing[collection].forEach(async channelId => 
+                                        await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                             }
                         });
                     } 
@@ -485,8 +488,9 @@ async function trackMints() {
                                         );
                                         
                                     const guild = client.guilds.cache.get(guildId);
-                                    if (guild)
-                                        await (await guild.channels.fetch(listing[collection].channel)).send({ embeds: [embed], components: [row] });
+                                    if (guild) 
+                                        listing[collection].forEach(async channelId => 
+                                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                                         // await (await guild.channels.fetch("1052592184781717506")).send({ embeds: [embed], components: [row] });
                                 }
                             });
@@ -507,28 +511,46 @@ client.on('interactionCreate', async interaction => {
             case "track":
                 switch (interaction.options.getString("action")) {
                     case "sales":
-                        if (listSales[interaction.guildId])
-                            listSales[interaction.guildId][interaction.options.getString("collection")] = { channel: interaction.options.getChannel("channel").id };
+                        if (listSales[interaction.guildId]?.[interaction.options.getString("collection")]?.includes(interaction.options.getChannel("channel").id))
+                            break;
+
+                        if (listSales[interaction.guildId]?.[interaction.options.getString("collection")])
+                            listSales[interaction.guildId][interaction.options.getString("collection")].push(interaction.options.getChannel("channel").id);
+                        else if (listSales[interaction.guildId])
+                            listSales[interaction.guildId][interaction.options.getString("collection")] = [ interaction.options.getChannel("channel").id ];
                         else
-                            listSales[interaction.guildId] = { 
-                                [interaction.options.getString("collection")]: { channel: interaction.options.getChannel("channel").id }
+                            listSales[interaction.guildId] = {
+                                [interaction.options.getString("collection")]: [ interaction.options.getChannel("channel").id ]
                             };
+
                         break;
                     case "listings":
-                        if (listListings[interaction.guildId])
-                            listListings[interaction.guildId][interaction.options.getString("collection")] = { channel: interaction.options.getChannel("channel").id };
+                        if (listListings[interaction.guildId]?.[interaction.options.getString("collection")]?.includes(interaction.options.getChannel("channel").id))
+                            break;
+
+                        if (listListings[interaction.guildId]?.[interaction.options.getString("collection")])
+                            listListings[interaction.guildId][interaction.options.getString("collection")].push(interaction.options.getChannel("channel").id);
+                        else if (listListings[interaction.guildId])
+                            listListings[interaction.guildId][interaction.options.getString("collection")] = [ interaction.options.getChannel("channel").id ];
                         else
                             listListings[interaction.guildId] = {
-                                [interaction.options.getString("collection")]: { channel: interaction.options.getChannel("channel").id }
+                                [interaction.options.getString("collection")]: [ interaction.options.getChannel("channel").id ]
                             };
+
                         break;
                     case "mints":
-                        if (listMints[interaction.guildId])
-                            listMints[interaction.guildId][interaction.options.getString("collection")] = { channel: interaction.options.getChannel("channel").id };
+                        if (listMints[interaction.guildId]?.[interaction.options.getString("collection")]?.includes(interaction.options.getChannel("channel").id))
+                            break;
+
+                        if (listMints[interaction.guildId]?.[interaction.options.getString("collection")])
+                            listMints[interaction.guildId][interaction.options.getString("collection")].push(interaction.options.getChannel("channel").id);
+                        else if (listMints[interaction.guildId])
+                            listMints[interaction.guildId][interaction.options.getString("collection")] = [ interaction.options.getChannel("channel").id ];
                         else
                             listMints[interaction.guildId] = { 
-                                [interaction.options.getString("collection")]: { channel: interaction.options.getChannel("channel").id }
+                                [interaction.options.getString("collection")]: [ interaction.options.getChannel("channel").id ]
                             };
+
                         break;
                 }
                 
@@ -544,13 +566,58 @@ client.on('interactionCreate', async interaction => {
             case "stop":
                 switch (interaction.options.getString("action")) {
                     case "sales":
-                        delete listSales[interaction.guildId][interaction.options.getString("collection")];
+                        if (listSales[interaction.guildId]?.[interaction.options.getString("collection")]?.includes(interaction.options.getChannel("channel").id)) {
+                            await interaction.reply({ embeds: [{
+                                color: Discord.Colors.Orange,
+                                title: `Collection ${interaction.options.getString("collection")} is not being tracked on this server`,
+                                footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
+                                timestamp: (new Date()).toISOString(),
+                            }] });
+
+                            return;
+                        }
+
+                        if (listSales[interaction.guildId]?.[interaction.options.getString("collection")]) 
+                            listSales[interaction.guildId][interaction.options.getString("collection")] = 
+                                listSales[interaction.guildId][interaction.options.getString("collection")].filter(channel => 
+                                    channel !== interaction.options.getChannel("channel").id);
+
                         break;
                     case "listings":
-                        delete listListings[interaction.guildId][interaction.options.getString("collection")];
+                        if (listListings[interaction.guildId]?.[interaction.options.getString("collection")]?.includes(interaction.options.getChannel("channel").id)) {
+                            await interaction.reply({ embeds: [{
+                                color: Discord.Colors.Orange,
+                                title: `Collection ${interaction.options.getString("collection")} is not being tracked on this server`,
+                                footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
+                                timestamp: (new Date()).toISOString(),
+                            }] });
+                            
+                            return;
+                        }
+
+                        if (listListings[interaction.guildId]?.[interaction.options.getString("collection")]) 
+                            listListings[interaction.guildId][interaction.options.getString("collection")] = 
+                                listListings[interaction.guildId][interaction.options.getString("collection")].filter(channel => 
+                                    channel !== interaction.options.getChannel("channel").id);
+
                         break;
                     case "mints":
-                        delete listMints[interaction.guildId][interaction.options.getString("collection")];
+                        if (listMints[interaction.guildId]?.[interaction.options.getString("collection")]?.includes(interaction.options.getChannel("channel").id)) {
+                            await interaction.reply({ embeds: [{
+                                color: Discord.Colors.Orange,
+                                title: `Collection ${interaction.options.getString("collection")} is not being tracked on this server`,
+                                footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
+                                timestamp: (new Date()).toISOString(),
+                            }] });
+                            
+                            return;
+                        }
+                                                
+                        if (listMints[interaction.guildId]?.[interaction.options.getString("collection")]) 
+                            listMints[interaction.guildId][interaction.options.getString("collection")] = 
+                                listMints[interaction.guildId][interaction.options.getString("collection")].filter(channel => 
+                                    channel !== interaction.options.getChannel("channel").id);
+
                         break;
                 }
 
@@ -586,7 +653,6 @@ client.on('interactionCreate', async interaction => {
                 }];
 
                 let idx = 0;
-
                 let embed = {
                     color: Discord.Colors.Orange,
                     title: `LISTINGS 🏷️`,
@@ -597,25 +663,27 @@ client.on('interactionCreate', async interaction => {
 
                 embeds.push(embed);
 
-                Object.entries(listListings[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel })).forEach(tracking => {
-                    if (idx !== 0 && idx % 25 === 0) {
-                        embeds.push(embed);
-                        embed = {
-                            color: Discord.Colors.Orange,
-                            footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
-                            timestamp: (new Date()).toISOString(),
-                            fields: [{
-                                name: `Listing tracker ${idx+1}:`,
-                                value: `${tracking.collection} on <#${tracking.channel}>`
-                            }]
-                        };
-                    } else 
-                        embed.fields.push({
-                            name: `Listing tracker ${idx+1}:`,
-                            value: `${tracking.collection} on <#${tracking.channel}>`
-                        });
-                    
-                    idx++;
+                Object.entries(listListings[interaction.guildId] ?? {}).map(([collection, channels]) => ({ collection, channels })).forEach(tracking => {
+                    tracking.channels.forEach(channel => {
+                        if (idx !== 0 && idx % 25 === 0) {
+                            embeds.push(embed);
+                            embed = {
+                                color: Discord.Colors.Orange,
+                                footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
+                                timestamp: (new Date()).toISOString(),
+                                fields: [{
+                                    name: `Sale tracker ${idx+1}:`,
+                                    value: `${tracking.collection} on <#${channel}>`
+                                }]
+                            };
+                        } else 
+                            embed.fields.push({
+                                name: `Sale tracker ${idx+1}:`,
+                                value: `${tracking.collection} on <#${channel}>`
+                            });
+                            
+                        idx++;
+                    });
                 });
 
                 embed = {
@@ -627,28 +695,29 @@ client.on('interactionCreate', async interaction => {
                 };
 
                 embeds.push(embed);
-
                 idx = 0;
 
-                Object.entries(listSales[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel })).forEach(tracking => {
-                    if (idx !== 0 && idx % 25 === 0) {
-                        embeds.push(embed);
-                        embed = {
-                            color: Discord.Colors.Orange,
-                            footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
-                            timestamp: (new Date()).toISOString(),
-                            fields: [{
+                Object.entries(listSales[interaction.guildId] ?? {}).map(([collection, channels]) => ({ collection, channels })).forEach(tracking => {
+                    tracking.channels.forEach(channel => {
+                        if (idx !== 0 && idx % 25 === 0) {
+                            embeds.push(embed);
+                            embed = {
+                                color: Discord.Colors.Orange,
+                                footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
+                                timestamp: (new Date()).toISOString(),
+                                fields: [{
+                                    name: `Sale tracker ${idx+1}:`,
+                                    value: `${tracking.collection} on <#${channel}>`
+                                }]
+                            };
+                        } else 
+                            embed.fields.push({
                                 name: `Sale tracker ${idx+1}:`,
-                                value: `${tracking.collection} on <#${tracking.channel}>`
-                            }]
-                        };
-                    } else 
-                        embed.fields.push({
-                            name: `Sale tracker ${idx+1}:`,
-                            value: `${tracking.collection} on <#${tracking.channel}>`
-                        });
-                        
-                    idx++;
+                                value: `${tracking.collection} on <#${channel}>`
+                            });
+                            
+                        idx++;
+                    });
                 })
 
                 embed = {
@@ -660,29 +729,30 @@ client.on('interactionCreate', async interaction => {
                 };
 
                 embeds.push(embed);
-
                 idx = 0;
 
-                Object.entries(listMints[interaction.guildId] ?? {}).map(([collection, { channel }]) => ({ collection, channel })).forEach(tracking => {
-                    if (idx !== 0 && idx % 25 === 0) {
-                        embeds.push(embed);
-                        embed = {
-                            color: Discord.Colors.Orange,
-                            footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
-                            timestamp: (new Date()).toISOString(),
-                            fields: [{
-                                name: `Mint tracker ${idx+1}:`,
-                                value: `${tracking.collection} on <#${tracking.channel}>`
-                            }]
-                        };
-                    } else 
-                        embed.fields.push({
-                            name: `Mint tracker ${idx+1}:`,
-                            value: `${tracking.collection} on <#${tracking.channel}>`
-                        });
-                        
-                    idx++;
-                });
+                Object.entries(listMints[interaction.guildId] ?? {}).map(([collection, channels]) => ({ collection, channels })).forEach(tracking => {
+                    tracking.channels.forEach(channel => {
+                        if (idx !== 0 && idx % 25 === 0) {
+                            embeds.push(embed);
+                            embed = {
+                                color: Discord.Colors.Orange,
+                                footer: { text: `Powered by Ziken Labs, 2023`, iconURL: "https://cdn.discordapp.com/attachments/1052592184781717506/1071074609098657852/logo_1080.gif.png" },
+                                timestamp: (new Date()).toISOString(),
+                                fields: [{
+                                    name: `Sale tracker ${idx+1}:`,
+                                    value: `${tracking.collection} on <#${channel}>`
+                                }]
+                            };
+                        } else 
+                            embed.fields.push({
+                                name: `Sale tracker ${idx+1}:`,
+                                value: `${tracking.collection} on <#${channel}>`
+                            });
+                            
+                        idx++;
+                    });
+                })
 
                 await interaction.reply({ embeds });
                 return;
@@ -731,7 +801,7 @@ client.on('ready', async () => {
     }, 1000 * 60);
     // }, 1000 * 4);
 
-    return;
+    // return;
 
     client.application.commands.set([
         {
@@ -782,12 +852,18 @@ client.on('ready', async () => {
                         { name: "mints", value: "mints" },
                     ]
                 },
+                { 
+                    type: 7,
+                    name: "channel",
+                    description: "Output channel",
+                    required: true,
+                },
                 {
                     type: 3,
                     name: "collection",
                     description: "The collection's ID",
                     required: true,
-                }
+                },
             ]
         },
         {
