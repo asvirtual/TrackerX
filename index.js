@@ -202,7 +202,7 @@ async function trackListings() {
                             }
                             if ("nftValue" in transaction_price && transaction_price["nftValue"] != null) {
                                 if ("floorValue" in transaction_price["nftValue"]) {
-                                    transaction_price_egld = transaction_price["nftValue"]["floorValue"];
+                                    transaction_price_egld = transaction_price["nftValue"]["maxValue"];
                                 }
                             }
                             const price_and_attributes_responseResp = await session.get("https://api.multiversx.com/nfts/" + collection_id, { headers: { 'accept': 'application/json' } });
