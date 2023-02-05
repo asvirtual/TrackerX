@@ -189,7 +189,6 @@ async function trackListings() {
                 if (item.action?.arguments?.transfers) {
                     for (let transfer of item["action"]["arguments"]["transfers"]) {
                         if (transfer["type"] === "NonFungibleESDT") {
-                            const name = transfer["name"];
                             const collection = transfer["collection"];
                             const collection_id = transfer["identifier"];
                             let link = "https://api.multiversx.com/nfts/" + collection_id;
@@ -208,6 +207,7 @@ async function trackListings() {
 
                             const price_and_attributes_responseResp = await session.get("https://api.multiversx.com/nfts/" + collection_id, { headers: { 'accept': 'application/json' } });
                             const price_and_attributes_response = price_and_attributes_responseResp.data;
+                            const name = price_and_attributes_response.name;
                             let attributes;
                             if ("attributes" in price_and_attributes_response) {
                                 const decode_string = Buffer.from(price_and_attributes_response["attributes"], 'base64').toString();
