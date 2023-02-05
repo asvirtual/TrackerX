@@ -201,10 +201,11 @@ async function trackListings() {
                                 }
                             }
                             if ("saleInfoNft" in transaction_price && transaction_price["saleInfoNft"] != null) {
-                                if ("min_bid_short" in transaction_price["saleInfoNft"]) {
-                                    transaction_price_egld = transaction_price["saleInfoNft"]["min_bid_short"];
+                                if ("min_bid" in transaction_price["saleInfoNft"]) {
+                                    transaction_price_egld = (parseInt(transaction_price["saleInfoNft"]["min_bid"]) / 1000000000000000000).toString();
                                 }
                             }
+
                             const price_and_attributes_responseResp = await session.get("https://api.multiversx.com/nfts/" + collection_id, { headers: { 'accept': 'application/json' } });
                             const price_and_attributes_response = price_and_attributes_responseResp.data;
                             let attributes;
@@ -219,8 +220,6 @@ async function trackListings() {
                                         list_attributes = attributes.map(d => `**${d["trait_type"]}:** ${d["value"]}`);
                                 }
                             }
-
-                            console.log(transaction_price);
 
                             const receiver = "["+item["receiver"].slice(0, 3) + "..." + item["receiver"].slice(-3)+"](https://explorer.multiversx.com/accounts/"+item["receiver"]+")";
                             
