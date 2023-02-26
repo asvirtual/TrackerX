@@ -161,7 +161,8 @@ async function trackSales() {
 
         lastTxHashSales = firstTxHash;
     } catch (e) {
-        console.warn(`Error while fetching data on sales: ${e}`);
+        console.warn(`[${new Date()}] Error while fetching data on sales: ${e}`);
+        console.error(e);
     }
 }
 
@@ -288,7 +289,8 @@ async function trackListings() {
             lastTxHashListings = firstTxHash;
         }
     } catch (e) {
-        console.warn(`Error while fetching data on listings: ${e}`);
+        console.warn(`[${new Date()}] Error while fetching data on listings: ${e}`);
+        console.error(e);
     }
 }
 
@@ -502,7 +504,8 @@ async function trackMints() {
             lastTxHashMints = firstTxHash
         }
     } catch (e) {
-        console.warn(`Error while fetching data on mints: ${e}`)
+        console.warn(`[${new Date()}] Error while fetching data on mints: ${e}`);
+        console.error(e);
     }
 }
 
