@@ -800,8 +800,11 @@ client.on('ready', async () => {
     // setTimeout(async () => {
     setInterval(async () => {
         trackSales();
+        // setTimeout(trackListings, 1000 * 2);
+        // setTimeout(trackMints, 1000 * 4);
         setTimeout(trackListings, 1000 * 60);
         setTimeout(trackMints, 1000 * 60);
+        setTimeout(save, 1000 * 90);
     }, 1000 * 180);
     // }, 1000 * 4);
 
