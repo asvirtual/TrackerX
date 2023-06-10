@@ -313,6 +313,7 @@ async function trackMints() {
                 }
             }
         }
+
         if (reversed_list.length > 0) {
             for (let item of reversed_list.reverse()) {
                 const transactionResp = await axios.get(
@@ -370,7 +371,9 @@ async function trackMints() {
                             message = `**Name:** ${name}\n**Collection:** ${collection}\n**Price:** ${transactionPrice} EGLD\n**Minter:** ${receiver}\n\n__**Attributes:**__:\n${list_attributes.join("\n")}`;
                         }
 
+                        console.log(collection)
                         Object.entries(listMints).forEach(async ([guildId, listing]) => {
+                            console.log(guildId, listing)
                             if (Object.keys(listing).includes(collection)) {
                                 const embed = {
                                     color: Discord.Colors.Orange,
@@ -463,7 +466,9 @@ async function trackMints() {
                                 message = `**Name:** ${name}\n**Collection:** ${collection}\n${transactionPrice !== 0 ? "**Price:** " + transactionPrice + " EGLD\n" : ""}**Minter:** ${receiver}\n\n__**Attributes:**__:\n${list_attributes.join("\n")}`;
                             }
     
+                            console.log(collection)
                             Object.entries(listMints).forEach(async ([guildId, listing]) => {
+                                console.log(guildId, listing)
                             // Object.entries({ "1052592184345501726": { "ETHOS-205078": "1052592184781717506" } }).forEach(async ([guildId, listing]) => {
                                 if (Object.keys(listing).includes(collection)) {
                                 // if (true) {
@@ -501,8 +506,9 @@ async function trackMints() {
                     }
                 }
             }
-            lastTxHashMints = firstTxHash
         }
+        
+        lastTxHashMints = firstTxHash
     } catch (e) {
         console.warn(`[${new Date()}] Error while fetching data on mints: ${e}`);
         console.error(e);
@@ -797,16 +803,17 @@ client.on('ready', async () => {
     console.log("Bot ready");
 
     load();
-    // setTimeout(async () => {
-    setInterval(async () => {
+    setTimeout(async () => {
+    // setInterval(async () => {
         trackSales();
-        // setTimeout(trackListings, 1000 * 2);
-        // setTimeout(trackMints, 1000 * 4);
-        setTimeout(trackListings, 1000 * 60);
-        setTimeout(trackMints, 1000 * 60);
-        setTimeout(save, 1000 * 90);
-    }, 1000 * 180);
-    // }, 1000 * 4);
+        setTimeout(trackListings, 1000 * 2);
+        setTimeout(trackMints, 1000 * 4);
+        setTimeout(save, 1000 * 6);
+        // setTimeout(trackListings, 1000 * 60);
+        // setTimeout(trackMints, 1000 * 60);
+        // setTimeout(save, 1000 * 90);
+    // }, 1000 * 180);
+    }, 1000 * 10);
 
     return;
 
