@@ -507,7 +507,7 @@ async function trackMints() {
                 }
             }
         }
-        
+
         lastTxHashMints = firstTxHash
     } catch (e) {
         console.warn(`[${new Date()}] Error while fetching data on mints: ${e}`);
@@ -803,17 +803,17 @@ client.on('ready', async () => {
     console.log("Bot ready");
 
     load();
-    setTimeout(async () => {
-    // setInterval(async () => {
-        trackSales();
-        setTimeout(trackListings, 1000 * 2);
-        setTimeout(trackMints, 1000 * 4);
-        setTimeout(save, 1000 * 6);
-        // setTimeout(trackListings, 1000 * 60);
-        // setTimeout(trackMints, 1000 * 60);
-        // setTimeout(save, 1000 * 90);
-    // }, 1000 * 180);
-    }, 1000 * 10);
+    // setTimeout(async () => {
+    setInterval(async () => {
+        // trackSales();
+        // setTimeout(trackListings, 1000 * 2);
+        // setTimeout(trackMints, 1000 * 4);
+        // setTimeout(save, 1000 * 6);
+        setTimeout(trackListings, 1000 * 60);
+        setTimeout(trackMints, 1000 * 60);
+        setTimeout(save, 1000 * 90);
+    }, 1000 * 180);
+    // }, 1000 * 10);
 
     return;
 
