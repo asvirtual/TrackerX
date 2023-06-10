@@ -14,6 +14,7 @@ let lastTxHashListings = "";
 let lastTxHashMints = "";
 
 function save() {
+    console.log(`Saving data... ${lastTxHashSales}, ${lastTxHashListings}, ${lastTxHashMints}`);
     fs.writeFileSync("data.json", JSON.stringify({
         listSales,
         listListings,
@@ -286,8 +287,9 @@ async function trackListings() {
                     }
                 }
             }
-            lastTxHashListings = firstTxHash;
         }
+
+        lastTxHashListings = firstTxHash;
     } catch (e) {
         console.warn(`[${new Date()}] Error while fetching data on listings: ${e}`);
         console.error(e);
@@ -373,7 +375,7 @@ async function trackMints() {
 
                         console.log(collection)
                         Object.entries(listMints).forEach(async ([guildId, listing]) => {
-                            console.log(guildId, listing)
+                            console.log(guildId, listing, Object.keys(listing).includes(collection))
                             if (Object.keys(listing).includes(collection)) {
                                 const embed = {
                                     color: Discord.Colors.Orange,
@@ -469,9 +471,7 @@ async function trackMints() {
                             console.log(collection)
                             Object.entries(listMints).forEach(async ([guildId, listing]) => {
                                 console.log(guildId, listing)
-                            // Object.entries({ "1052592184345501726": { "ETHOS-205078": "1052592184781717506" } }).forEach(async ([guildId, listing]) => {
                                 if (Object.keys(listing).includes(collection)) {
-                                // if (true) {
                                     const embed = {
                                         color: Discord.Colors.Orange,
                                         title: `NEW MINT! 💸`,
@@ -497,17 +497,20 @@ async function trackMints() {
                                         
                                     const guild = client.guilds.cache.get(guildId);
                                     if (guild) 
+                                        // listing[collection].forEach(channelId => console.log(channelId, embed))
                                         listing[collection].forEach(async channelId => 
                                             await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
-                                        // await (await guild.channels.fetch("1052592184781717506")).send({ embeds: [embed], components: [row] });
                                 }
                             });
                         }
                     }
+                } else {
+                    console.warn(transaction_nft)
                 }
             }
         }
 
+        console.log(`Updating mints hash: ${firstTxHash}`);
         lastTxHashMints = firstTxHash
     } catch (e) {
         console.warn(`[${new Date()}] Error while fetching data on mints: ${e}`);
@@ -805,13 +808,15 @@ client.on('ready', async () => {
     load();
     // setTimeout(async () => {
     setInterval(async () => {
-        // trackSales();
-        // setTimeout(trackListings, 1000 * 2);
-        // setTimeout(trackMints, 1000 * 4);
-        // setTimeout(save, 1000 * 6);
-        setTimeout(trackListings, 1000 * 60);
-        setTimeout(trackMints, 1000 * 60);
-        setTimeout(save, 1000 * 90);
+        save();
+
+        trackSales();
+        trackListings();
+        trackMints();
+
+        // setTimeout(trackListings, 1000 * 60);
+        // setTimeout(trackMints, 1000 * 60);
+        // setTimeout(save, 1000 * 90);
     }, 1000 * 180);
     // }, 1000 * 10);
 
