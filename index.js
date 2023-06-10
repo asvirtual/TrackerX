@@ -153,9 +153,18 @@ async function trackSales() {
                         );
 
                     const guild = client.guilds.cache.get(guildId);
-                    if (guild) 
-                        listing[collection].forEach(async channelId => 
-                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
+                    if (guild) {
+                        for (const channelId of listing[collection]) {
+                            try {
+                                await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] })
+                            } catch (err) {
+                                console.warn(`Error sending mint message to ${channelId}, guild ${guildId}: ${err}`)
+                            }
+                        }
+                        // listing[collection].forEach(async channelId => 
+                            
+                        // );
+                    }
                 }
             });
         }
@@ -277,10 +286,22 @@ async function trackListings() {
                                                 .setURL(link)
                                         );
 
-                                    const guild = client.guilds.cache.get(guildId);
-                                    if (guild) 
-                                        listing[collection].forEach(async channelId => 
-                                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
+                                    const guild = client.guilds.cache.get(guildId);                  
+                                    if (guild) {
+                                        for (const channelId of listing[collection]) {
+                                            try {
+                                                await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] })
+                                            } catch (err) {
+                                                console.warn(`Error sending listing message to ${channelId}, guild ${guildId}: ${err}`)
+                                            }
+                                        }
+                                        // listing[collection].forEach(async channelId => 
+                                            
+                                        // );
+                                    }
+                                    // if (guild) 
+                                    //     listing[collection].forEach(async channelId => 
+                                    //         await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                                 }
                             })
                         }
@@ -401,9 +422,19 @@ async function trackMints() {
                                     );
                                 
                                 const guild = client.guilds.cache.get(guildId);
-                                if (guild) 
-                                    listing[collection].forEach(async channelId => 
-                                        await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
+                                if (guild) {
+                                    for (const channelId of listing[collection]) {
+                                        try {
+                                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] })
+                                        } catch (err) {
+                                            console.warn(`Error sending mint message to ${channelId}, guild ${guildId}: ${err}`)
+                                        }
+                                    }
+                                }
+
+                                // if (guild) 
+                                //     listing[collection].forEach(async channelId => 
+                                //         await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                             }
                         });
                     } 
@@ -496,10 +527,20 @@ async function trackMints() {
                                         );
                                         
                                     const guild = client.guilds.cache.get(guildId);
-                                    if (guild) 
-                                        // listing[collection].forEach(channelId => console.log(channelId, embed))
-                                        listing[collection].forEach(async channelId => 
-                                            await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
+                                    if (guild) {
+                                        for (const channelId of listing[collection]) {
+                                            try {
+                                                await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] })
+                                            } catch (err) {
+                                                console.warn(`Error sending mint message to ${channelId}, guild ${guildId}: ${err}`)
+                                            }
+                                        }
+                                    }
+
+                                    // if (guild) 
+                                    //     // listing[collection].forEach(channelId => console.log(channelId, embed))
+                                    //     listing[collection].forEach(async channelId => 
+                                    //         await (await guild.channels.fetch(channelId)).send({ embeds: [embed], components: [row] }));
                                 }
                             });
                         }
