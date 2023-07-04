@@ -72,7 +72,7 @@ const updateSpreadsheet = async () => {
 
         const result = await service.spreadsheets.values.get({ 
             spreadsheetId: SPREADSHEET_ID, 
-            range: "TrackerX!B:B" 
+            range: "TrackerX!C:C" 
         });
 
         rows = result.data.values
@@ -81,8 +81,7 @@ const updateSpreadsheet = async () => {
         while (rows[counter] && rows[counter][0] !== '')
             counter++;
 
-        const today = new Date();
-        values = [ [`${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`, (await client.guilds.fetch()).size] ]
+        values = [ [(await client.guilds.fetch()).size] ]
 
         resource = {
             values,
@@ -90,7 +89,7 @@ const updateSpreadsheet = async () => {
 
         await service.spreadsheets.values.update({ 
             spreadsheetId: SPREADSHEET_ID, 
-            range: `TrackerX!B${counter+1}:C${counter+1}`,
+            range: `TrackerX!C${counter+1}`,
             valueInputOption: 'USER_ENTERED',
             resource,
         });
